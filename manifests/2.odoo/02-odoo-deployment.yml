@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-deployment
+  namespace: ic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: odoo-deployment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: odoo-deployment
+    spec:
+      containers:
+      - image: odoo
+        name: odoo
+        ports:
+          - containerPort: 8069
+        env:
+        - name: HOST
+          value: odoo-db-service
+        - name: USER
+          value: odoo
+        - name: PASSWORD
+          value: odoo
+        volumeMounts:
+        - name: odoo-web-data
+          mountPath: /var/lib/odoo
+        - name: config
+          mountPath: /etc/odoo
+        - name: addons
+          mountPath: /mnt/extra-addons
+      volumes:
+        - name: odoo-web-data
+          hostPath:
+            path: /odoo-web-data
+        - name: config
+          hostPath:
+            path: /config
+        - name: addons
+          hostPath:
+            path: /addons
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo-web-service
+  namespace: ic
+spec:
+  selector:
+    app: odoo-deployment
+  type: NodePort
+  ports:
+    - port: 8069
+      targetPort: 8069
+      nodePort: 30030

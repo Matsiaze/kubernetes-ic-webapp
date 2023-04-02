@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pgadmin-deployment
+  name: pgadmin-deployment
+  namespace: ic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pgadmin-deployment
+    spec:
+      containers:
+      - image: dpage/pgadmin4
+        name: pgadmin
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: pgadmin@admin.com
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: pgadmin
+        - name: PGADMIN_SERVER_JSON_FILE
+          value: /pgadmin4/servers.json
+        volumeMounts:
+        - name: pgadmin-servers
+          mountPath: /pgadmin4/servers.json
+      volumes:
+        - name: pgadmin-servers
+          hostPath:
+            path: /pgadmin-servers/servers.json
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-service
+  namespace: ic
+  labels:
+    app: pgadmin-service
+spec:
+  selector:
+    app: pgadmin-deployment
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30200
