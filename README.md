@@ -7,5 +7,8 @@ Using the Dockerfile, I released a ic-webapp:1.0 image. Available on my docker h
 The repository "docker-resources" contains a the Dockerfile and the docker-compose.yml used to containerise all the stacks of the app.
 # Kubernetes deployment:
 I then deployed using the repository named "manifests" the entire application inside a Kubernetes cluster according to the architecture provided in the ic-webapp's project Readme.md
+# Continuous Integration
+Adding Jenkinsfile to experiment Continuous Integration with jenkins.
 # Notes
 Please note that for enhancing best practices and securise your infrastructure you need to use Kubernetes Secrets.
+
