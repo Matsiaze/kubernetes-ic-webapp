@@ -5,6 +5,4 @@ WORKDIR /opt
 COPY . .
 RUN pip install flask==1.1.2
 EXPOSE 8080
-USER root
 ENTRYPOINT ["python", "app.py"]
-
