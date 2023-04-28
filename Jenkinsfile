@@ -5,15 +5,13 @@ pipeline {
     environment {
       IMAGE_NAME = 'icwebapp-jenkins'
       IMAGE_TAG = 'latest'
-      STAGING = 'icwebappjenk-staging'
-      PRODUCTION = 'icwebappjenk-prod'
     }
     agent none
     stages {
         stage('Build ic-webapp Image') {
             agent any
             steps {
-                sh 'docker build -t mclab7/${IMAGE_NAME}:${IMAGE_TAG} docker-resources/'
+                sh 'docker build -t mclab7/${IMAGE_NAME}:${IMAGE_TAG} app/'
             }
         }
         stage('Run Container') {
