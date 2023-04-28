@@ -23,7 +23,7 @@ pipeline {
                  sh '''
                    docker rm -f ${IMAGE_NAME}
                    docker run -d --name ${IMAGE_NAME} -e PORT=8080 -p 5000:8080 mclab7/${IMAGE_NAME}:${IMAGE_TAG}
-                   sleep 7
+                   sleep 10
                  '''
                }
             }
