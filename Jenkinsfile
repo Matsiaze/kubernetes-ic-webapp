@@ -29,7 +29,7 @@ pipeline {
         stage('Test Image') {
             agent any
             steps {
-                sh 'curl http://192.168.56.9:5000 | grep -q -i "ic-webapp"'
+                sh 'curl http://192.168.56.9:5000 | grep -q -i "ic webapp"'
             }
         }
         stage('Clean Container') {
